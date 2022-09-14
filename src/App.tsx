@@ -13,7 +13,8 @@ import {
     Link
 } from "react-router-dom";
 import {AGd} from './components/AGrid'
-
+import charts from './components/echarts'
+import ReactEcharts from "echarts-for-react";
 
 function App() {
     return (
@@ -274,6 +275,22 @@ function Mapping() {
         setMapping(userClone);
     }
 
+    const option = {
+        xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                data: [120, 200, 150, 80, 70, 110, 130],
+                type: 'bar'
+            }
+        ]
+    };
+
 
     return (
         <div className="App">
@@ -314,7 +331,7 @@ function Mapping() {
                         />
                     </div>
                     <div>
-                        <AGd users={mappings}></AGd>
+                        <ReactEcharts option={option}/>
                     </div>
                 </div>
 

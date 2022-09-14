@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, make_response, jsonify, redir
 # import mysql_queries as mq
 from mysql_queries_class import *
 from flask_cors import CORS
+from quicksort import quickSort
 
 app = Flask(__name__)
 CORS(app)
@@ -165,6 +166,13 @@ def delete_mapping():
         return redirect('/mapping')
     else:
         return render_template('index.html')
+
+
+@app.route('/badcompo', methods=['GET'])
+def top5_bad_comp():
+    data = mysql.get_all('comp')
+    quickSort(data, 0, len(data) - 1)
+    return jsonify(data[0:5])
 
 
 if __name__ == "__main__":
