@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, make_response, jsonify, redir
 # import mysql_queries as mq
 from mysql_queries_class import *
 from flask_cors import CORS
-from quicksort import quickSort
+from quicksort import QuickSort
 
 app = Flask(__name__)
 CORS(app)
@@ -171,8 +171,51 @@ def delete_mapping():
 @app.route('/badcompo', methods=['GET'])
 def top5_bad_comp():
     data = mysql.get_all('comp')
-    quickSort(data, 0, len(data) - 1)
-    return jsonify(data[0:5])
+    print(type(data))
+    data = list(data)
+    sorted_data = QuickSort(3, data, 0, len(data) - 1)
+    # data = list(data)
+    data = sorted_data.nums[0:5]
+    print(data)
+    return jsonify(data)
+
+
+@app.route('/mostused', methods=['GET'])
+def most_used():
+    data = mysql.get_all('comp')
+    dic = {}
+    data = list(data)
+    for i in data:
+        cur = list(i)
+        if cur[4] not in dic:
+            dic[cur[4]] = 1
+        else:
+            dic[cur[4]] += 1
+    data = []
+    for item in dic.items():
+        data.append(item)
+    sorted_data = QuickSort(1, data, 0, len(data) - 1)
+    return jsonify(sorted_data.nums[-5:])
+
+
+@app.route('/highestPFR', methods=['GET'])
+def highest_PFR():
+    data = mysql.get_all('comp')
+    dic = {}
+    data = list(data)
+    for i in data:
+        cur = list(i)
+        if cur[1] not in dic:
+            dic[cur[1]] = [cur[3], 1]
+        else:
+            dic[cur[1]][1] += 1
+            dic[cur[1]][0] += cur[3]
+    data = []
+    for key in dic:
+        cur = [key, dic[key][0] / dic[key][1]]
+        data.append(tuple(cur))
+    sorted_data = QuickSort(1, data, 0, len(data) - 1)
+    return jsonify(sorted_data.nums[-5:])
 
 
 if __name__ == "__main__":

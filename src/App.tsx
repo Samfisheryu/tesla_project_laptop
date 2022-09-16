@@ -23,10 +23,55 @@ function App() {
                 <Route path="failure/*" element={<Fail/>}/>
                 <Route path="components/*" element={<Comp/>}/>
                 <Route path="mapping/*" element={<Mapping/>}/>
+                <Route path="/*" element={<Index/>}/>
             </Routes>
         </Router>
     );
 }
+
+function Index() {
+    const appService = new AppService();
+    const [mused, setMUs] = useState<any>([]);
+    const [hPFR, setHPFRs] = useState<any>([]);
+    const [plot, setPlot] = useState<number>(0);
+    const [bad_comp, setBadComp] = useState<any>([]);
+    const get_5_bad_comp = async () => {
+        const bad_comp = await appService.get_bad_comp()
+        setBadComp(bad_comp)
+    }
+    const get_most_used = async () => {
+        const mus = await appService.get_m_used();
+        setMUs(mus);
+    }
+    const get_highest_PFR = async () => {
+        const hp = await appService.get_h_PFR();
+        setHPFRs(hp);
+    }
+
+    useEffect(() => {
+        console.log("executed only once!");
+        get_5_bad_comp();
+        get_most_used();
+        get_highest_PFR();
+    }, []);
+
+    return (
+        <div className="App">
+            <FailsH/>
+            <div className="row mrgnbtm">
+                <Users users={bad_comp}></Users>
+            </div>
+            <div className="row mrgnbtm">
+                <Users users={mused}></Users>
+            </div>
+            <div className="row mrgnbtm">
+                <Users users={hPFR}></Users>
+            </div>
+        </div>
+    );
+
+}
+
 
 function Fail() {
     const appService = new AppService();

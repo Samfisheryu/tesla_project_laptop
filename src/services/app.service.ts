@@ -1,4 +1,5 @@
 const axios = require('axios');
+
 // import app from "../../../../Flask demo2/app.py"
 
 export class AppService {
@@ -63,5 +64,21 @@ export class AppService {
         const response = await axios.post(`http://127.0.0.1:5000/updatemapping`, {user});
         return response.data;
     }
+
+    public async get_bad_comp(): Promise<any> {
+        const response = await axios.get('http://127.0.0.1:5000/badcompo');
+        return response.data;
+    }
+
+    public async get_m_used(): Promise<any> {
+        const response = await axios.get('http://127.0.0.1:5000/mostused');
+        return response.data;
+    }
+
+    public async get_h_PFR(): Promise<any> {
+        const response = await axios.get('http://127.0.0.1:5000/highestPFR');
+        return response.data;
+    }
+
 
 }
