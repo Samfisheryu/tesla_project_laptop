@@ -5,6 +5,7 @@ import {CreateData} from './components/CreateUser';
 import DisplayBoard from './components/DisplayBoard';
 import {AppService} from './services/app.service';
 import {Users} from './components/Users';
+import {Chart} from "./components/echarts";
 import React, {useEffect, useState} from 'react';
 import {
     BrowserRouter as Router,
@@ -12,9 +13,8 @@ import {
     Route,
     Link
 } from "react-router-dom";
-import {AGd} from './components/AGrid'
-import charts from './components/echarts'
 import ReactEcharts from "echarts-for-react";
+import {set} from "ag-grid-community/dist/lib/utils/object";
 
 function App() {
     return (
@@ -35,6 +35,13 @@ function Index() {
     const [hPFR, setHPFRs] = useState<any>([]);
     const [plot, setPlot] = useState<number>(0);
     const [bad_comp, setBadComp] = useState<any>([]);
+    useEffect(() => {
+        console.log("executed only once!");
+        get_5_bad_comp();
+        get_most_used();
+        get_highest_PFR();
+        console.log(hPFR[0]);
+    }, []);
     const get_5_bad_comp = async () => {
         const bad_comp = await appService.get_bad_comp()
         setBadComp(bad_comp)
@@ -48,25 +55,187 @@ function Index() {
         setHPFRs(hp);
     }
 
-    useEffect(() => {
-        console.log("executed only once!");
-        get_5_bad_comp();
-        get_most_used();
-        get_highest_PFR();
-    }, []);
+    const HighestPFR = {
+        color: [
 
+            '#d48265',
+            '#91c7ae',
+            '#749f83',
+            '#ca8622',
+            '#bda29a',
+            '#6e7074',
+            '#546570',
+            '#c4ccd3'
+        ],
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow',
+                label: {
+                    show: true
+                }
+            }
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                mark: {show: true},
+                dataView: {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
+            }
+        },
+        grid: {
+            top: '12%',
+            left: '1%',
+            right: '10%',
+            containLabel: true
+        },
+        xAxis: {
+            axisTick: {
+                alignWithLabel: true
+            },
+            type: 'category',
+            data: hPFR.map((x: any[]) => x[0])
+
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                data: hPFR.map((x: any[]) => x[1]),
+                type: 'bar',
+                barWidth: '20%'
+            }
+        ]
+    };
+    const BadComp = {
+        color: [
+
+            '#91c7ae',
+            '#749f83',
+            '#ca8622',
+
+        ],
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow',
+                label: {
+                    show: true
+                }
+            }
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                mark: {show: true},
+                dataView: {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
+            }
+        },
+        grid: {
+            top: '12%',
+            left: '1%',
+            right: '10%',
+            containLabel: true
+        },
+        xAxis: {
+            axisTick: {
+                alignWithLabel: true
+            },
+            type: 'category',
+            data: bad_comp.map((x: any[]) => x[1] + ',' + x[4])
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                data: bad_comp.map((x: any[]) => x[3]),
+                type: 'bar',
+                barWidth: '20%'
+            }
+        ]
+    };
+    const MostUSED = {
+        color: [
+            '#c23531',
+            '#2f4554',
+            '#61a0a8',
+            '#d48265',
+            '#91c7ae',
+            '#749f83',
+            '#ca8622',
+            '#bda29a',
+            '#6e7074',
+            '#546570',
+            '#c4ccd3'
+        ],
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow',
+                label: {
+                    show: true
+                }
+            }
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                mark: {show: true},
+                dataView: {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
+            }
+        },
+        grid: {
+            top: '12%',
+            left: '1%',
+            right: '10%',
+            containLabel: true
+        },
+        xAxis: {
+            axisTick: {
+                alignWithLabel: true
+            },
+            type: 'category',
+            data: mused.map((x: any[]) => x[0])
+
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                name: 'TOP 5 Most Used Components',
+                data: mused.map((x: any[]) => x[1]),
+                type: 'bar',
+                barWidth: '20%'
+            }
+        ]
+    };
     return (
         <div className="App">
             <FailsH/>
-            <div className="row mrgnbtm">
-                <Users users={bad_comp}></Users>
+            <div className="container mrgnbtm">
+                <div className="row mrgnbtm">
+                    <ReactEcharts option={BadComp}></ReactEcharts>
+                </div>
+                <div className="row mrgnbtm">
+                    <ReactEcharts option={MostUSED}></ReactEcharts>
+                </div>
+                <div className="row mrgnbtm">
+                    <ReactEcharts option={HighestPFR}></ReactEcharts>
+                </div>
             </div>
-            <div className="row mrgnbtm">
-                <Users users={mused}></Users>
-            </div>
-            <div className="row mrgnbtm">
-                <Users users={hPFR}></Users>
-            </div>
+
         </div>
     );
 

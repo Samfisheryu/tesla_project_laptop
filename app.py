@@ -175,7 +175,8 @@ def top5_bad_comp():
     data = list(data)
     sorted_data = QuickSort(3, data, 0, len(data) - 1)
     # data = list(data)
-    data = sorted_data.nums[0:5]
+    data = sorted_data.nums[-5:]
+    data = data[::-1]
     print(data)
     return jsonify(data)
 
@@ -195,7 +196,9 @@ def most_used():
     for item in dic.items():
         data.append(item)
     sorted_data = QuickSort(1, data, 0, len(data) - 1)
-    return jsonify(sorted_data.nums[-5:])
+    data = sorted_data.nums[-5:]
+    data = data[::-1]
+    return jsonify(data)
 
 
 @app.route('/highestPFR', methods=['GET'])
@@ -215,7 +218,9 @@ def highest_PFR():
         cur = [key, dic[key][0] / dic[key][1]]
         data.append(tuple(cur))
     sorted_data = QuickSort(1, data, 0, len(data) - 1)
-    return jsonify(sorted_data.nums[-5:])
+    data = sorted_data.nums[-5:]
+    data = data[::-1]
+    return jsonify(data)
 
 
 if __name__ == "__main__":

@@ -2,110 +2,49 @@ import React from "react";
 import ReactEcharts from "echarts-for-react";
 
 
-const Chart = ({users}: any) => {
-
-    console.log('users length:::', users.length)
-    if (users.length === 0) return users.length
-
-    const UserRow = (user: any, index: number) => {
-        console.log(user)
-        return (
-            <tr key={index} className={index % 2 === 0 ? 'odd' : 'even'}>
-                <td>
-                    {user[0]}
-                    <button type={"button"} className="btn btn-link">
-                        Delete
-                    </button>
-                </td>
-                <td>{user[1]}</td>
-                <td>{user[2]}</td>
-                {user.length >= 5 &&
-                    <td>{user[3]}</td>
-                }
-                {user.length >= 5 &&
-                    <td>{user[4]}</td>
-                }
-                {user.length === 7 &&
-                    <td>{user[5]}</td>
-                }
-                {user.length === 7 &&
-                    <td>{user[6]}</td>
-                }
-            </tr>
-        )
-
-    }
-
-    const userTable = users.map((user: any, index: number) => UserRow(user, index))
-    console.log(users[0].length)
-    return (
-        <div className="container">
-            <h2>Users</h2>
-            <table className="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Id</th>
-                    {users[0].length === 3 && <th>
-                        Fail Mode Name
-                    </th>}
-                    {users[0].length === 3 && <th>
-                        Fail Code
-                    </th>}
-                    {users[0].length === 5 && <th>
-                        Manufacturer
-                    </th>}
-                    {users[0].length === 5 && <th>
-                        Contact
-                    </th>}
-                    {users[0].length === 5 && <th>
-                        Failure Rate
-                    </th>}
-                    {users[0].length === 5 && <th>
-                        Component Name
-                    </th>}
-                    {users[0].length === 7 && <th>
-                        Component ID
-                    </th>}
-                    {users[0].length === 7 && <th>
-                        Manufacturer
-                    </th>}
-                    {users[0].length === 7 && <th>
-                        Component Name
-                    </th>}
-                    {users[0].length === 7 && <th>
-                        Failure ID
-                    </th>}
-                    {users[0].length === 7 && <th>
-                        Failure Code
-                    </th>}
-                    {users[0].length === 7 && <th>
-                        Failure Mode Name
-                    </th>}
-                </tr>
-                </thead>
-                <tbody>
-                {userTable}
-                </tbody>
-            </table>
-        </div>
-    )
-
-}
-
-// export {Users}
-
-function charts() {
+const Chart = ({hPFR}: any) => {
+    console.log(hPFR)
     const option = {
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow',
+                label: {
+                    show: true
+                }
+            }
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : true,
+        legend: {
+            data:['Growth', 'Budget 2011', 'Budget 2012'],
+            itemGap: 5
+        },
+        grid: {
+            top: '12%',
+            left: '1%',
+            right: '10%',
+            containLabel: true
+        },
         xAxis: {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            data: [hPFR[0][0],hPFR[1][0]]
         },
         yAxis: {
             type: 'value'
         },
         series: [
             {
-                data: [120, 200, 150, 80, 70, 110, 130],
+                data: [hPFR[0][1],hPFR[1][1]],
                 type: 'bar'
             }
         ]
@@ -113,4 +52,4 @@ function charts() {
     return <ReactEcharts option={option}/>;
 }
 
-export default charts;
+export {Chart}
