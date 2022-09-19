@@ -7,7 +7,7 @@ class QuickSort:
         self.nums = []
         for i in input_tuple:
             self.nums.append(list(i))
-        self.quickSort(self.nums, low, high,col)
+        self.quickSort(self.nums, low, high, col)
 
     def swap(self, nums, i, j):
         temp = nums[i]

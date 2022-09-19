@@ -6,9 +6,6 @@ function FailsH(){
     return (
         <div className="header">
             <h1>Failure Mode INFO</h1>
-            <button>
-
-            </button>
         </div>
     )
 }

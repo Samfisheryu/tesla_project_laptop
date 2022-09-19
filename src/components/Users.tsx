@@ -1,4 +1,5 @@
 import React from 'react'
+import deleteMapping from "../App";
 
 
 const Users = ({users}: any) => {
@@ -12,7 +13,7 @@ const Users = ({users}: any) => {
             <tr key={index} className={index % 2 === 0 ? 'odd' : 'even'}>
                 <td>
                     {user[0]}
-                    <button type={"button"} className="btn btn-link">
+                    <button type={"button"} className="btn btn-link" onClick={()=>deleteMapping()}>
                         Delete
                     </button>
                 </td>
